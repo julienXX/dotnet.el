@@ -32,6 +32,11 @@
   :prefix "dotnet-"
   :group 'tools)
 
+(defcustom dotnet-mode-keymap-prefix (kbd "C-c C-n")
+  "Dotnet minor mode keymap prefix."
+  :group 'dotnet
+  :type 'string)
+
 ;;;###autoload
 (defun dotnet-add-package (package-name)
   "Add package reference from PACKAGE-NAME."
@@ -60,13 +65,18 @@
 (defvar dotnet-templates '("console" "classlib" "mstest" "xunit" "web" "mvc" "webapi"))
 
 ;;;###autoload
-(defun dotnet-new ()
-  "Initialize a new console .NET project."
-  (interactive)
-  (let ((project-path (read-string "Project path: ")))
-    (let ((template (message "%s" (completing-read "Choose a template: " dotnet-templates))))
-      (let ((lang (message "%s" (completing-read "Choose a language: " dotnet-langs))))
-        (dotnet-command (concat "dotnet new " template  " -o " project-path " -lang " lang))))))
+(defun dotnet-new (project-path template lang)
+  "Initialize a new console .NET project.
+PROJECT-PATH is the path to the new project, TEMPLATE is a
+template (see `dotnet-templates'), and LANG is a supported
+language (see `dotnet-langs')."
+  (interactive (list (read-string "Project path: ")
+                     (completing-read "Choose a template: " dotnet-templates)
+                     (completing-read "Choose a language: " dotnet-langs)))
+  (dotnet-command (concat "dotnet"
+                          (mapconcat 'shell-quote-argument
+                                     (list "new" template  "-o" project-path "-lang" lang)
+                                     " "))))
 
 ;;;###autoload
 (defun dotnet-publish ()
@@ -122,11 +132,6 @@
     (define-key map (kbd dotnet-mode-keymap-prefix) dotnet-mode-command-map)
     map)
   "Keymap for dotnet-mode.")
-
-(defcustom dotnet-mode-keymap-prefix (kbd "C-c C-n")
-  "Dotnet minor mode keymap prefix."
-  :group 'dotnet
-  :type 'string)
 
 ;;;###autoload
 (define-minor-mode dotnet-mode
