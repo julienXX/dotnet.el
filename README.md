@@ -15,29 +15,34 @@ M-x package-install dotnet
 Add dotnet-minor-mode to your csharp-mode-hook or fsharp-mode-hook
 
 ```el
-(add-hook 'csharp-mode-hook 'dotnet-minor-mode)
+(add-hook 'csharp-mode-hook 'dotnet-mode)
 ;; and/or
-(add-hook 'fsharp-mode-hook 'dotnet-minor-mode)
+(add-hook 'fsharp-mode-hook 'dotnet-mode)
 ```
 
-You will now have the following key combinations at your disposal:
+Default prefix is `C-c C-n`, you will now have the following key combinations at your disposal:
 
- Keybinding             | Command
-------------------------|----------------------
- <kbd>C-c C-c a p</kbd> | dotnet-add-package
- <kbd>C-c C-c a r</kbd> | dotnet-add-reference
- <kbd>C-c C-c b</kbd>   | dotnet-build
- <kbd>C-c C-c c</kbd>   | dotnet-clean
- <kbd>C-c C-c n</kbd>   | dotnet-new
- <kbd>C-c C-c p</kbd>   | dotnet-publish
- <kbd>C-c C-c r</kbd>   | dotnet-restore
- <kbd>C-c C-c e</kbd>   | dotnet-run
- <kbd>C-c C-c C-e</kbd> | dotnet-run-with-args
- <kbd>C-c C-c t</kbd>   | dotnet-test
+ Keybinding            | Command
+-----------------------|----------------------
+ <kbd>prefix a p</kbd> | dotnet-add-package
+ <kbd>prefix a r</kbd> | dotnet-add-reference
+ <kbd>prefix b</kbd>   | dotnet-build
+ <kbd>prefix c</kbd>   | dotnet-clean
+ <kbd>prefix n</kbd>   | dotnet-new
+ <kbd>prefix p</kbd>   | dotnet-publish
+ <kbd>prefix r</kbd>   | dotnet-restore
+ <kbd>prefix e</kbd>   | dotnet-run
+ <kbd>prefix C-e</kbd> | dotnet-run-with-args
+ <kbd>prefix t</kbd>   | dotnet-test
+
+You can customize the prefix by adding:
+```el
+(setq dotnet-mode-keymap-prefix (kbd "<ADD YOUR PREFIX HERE>"))
+```
 
 ### TODO
 
 - [ ] Handle solutions
 - [ ] Fancier test options (specific file/test)
-- [ ] Handle nuget advances commands
+- [ ] Handle nuget advanced commands
 - [ ] Handle paket
