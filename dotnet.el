@@ -28,7 +28,6 @@
 ;;; Code:
 
 (require 'cl-lib)
-(require 'ido)
 
 (defgroup dotnet nil
   "dotnet group."
@@ -67,8 +66,8 @@
   "Initialize a new console .NET project."
   (interactive)
   (let ((project-path (read-string "Project path: ")))
-    (let ((template (message "%s" (ido-completing-read "Choose a template: " dotnet-templates))))
-      (let ((lang (message "%s" (ido-completing-read "Choose a language: " dotnet-langs))))
+    (let ((template (message "%s" (completing-read "Choose a template: " dotnet-templates))))
+      (let ((lang (message "%s" (completing-read "Choose a language: " dotnet-langs))))
         (dotnet-command (concat "dotnet new " template  " -o " project-path " -lang " lang))))))
 
 ;;;###autoload
