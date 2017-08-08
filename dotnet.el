@@ -27,8 +27,6 @@
 
 ;;; Code:
 
-(require 'cl-lib)
-
 (defgroup dotnet nil
   "dotnet group."
   :prefix "dotnet-"
