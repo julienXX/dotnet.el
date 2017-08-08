@@ -35,16 +35,16 @@
   :group 'tools)
 
 ;;;###autoload
-(defun dotnet-add-package ()
-  "Add package reference."
-  (interactive)
-  (dotnet-command (concat "dotnet add package " (read-string "Package name: "))))
+(defun dotnet-add-package (package-name)
+  "Add package reference from PACKAGE-NAME."
+  (interactive "sPackage name: ")
+  (dotnet-command (concat "dotnet add package " package-name)))
 
 ;;;###autoload
-(defun dotnet-add-reference ()
-  "Add project to project reference."
-  (interactive)
-  (dotnet-command (concat "dotnet add reference " (read-string "Reference to: "))))
+(defun dotnet-add-reference (project)
+  "Add PROJECT to project reference."
+  (interactive "sReference to: ")
+  (dotnet-command (concat "dotnet add reference " project)))
 
 ;;;###autoload
 (defun dotnet-build ()
@@ -89,10 +89,10 @@
   (dotnet-command "dotnet run"))
 
 ;;;###autoload
-(defun dotnet-run-with-args ()
-  "Compile and execute a .NET project with arguments."
-  (interactive)
-  (dotnet-command (concat "dotnet run " (read-string "Arguments: "))))
+(defun dotnet-run-with-args (args)
+  "Compile and execute a .NET project with ARGS."
+  (interactive "sArguments: ")
+  (dotnet-command (concat "dotnet run " args)))
 
 ;;;###autoload
 (defun dotnet-test ()
