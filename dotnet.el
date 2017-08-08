@@ -102,24 +102,39 @@
   "Run CMD in an async buffer."
   (async-shell-command cmd "*dotnet*"))
 
-(defvar dotnet-minor-mode-map (make-keymap) "Dotnet-mode keymap.")
-(defvar dotnet-minor-mode nil)
+(defvar dotnet-mode-command-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a p") #'dotnet-add-package)
+    (define-key map (kbd "a r") #'dotnet-add-reference)
+    (define-key map (kbd "b") #'dotnet-build)
+    (define-key map (kbd "c") #'dotnet-clean)
+    (define-key map (kbd "n") #'dotnet-new)
+    (define-key map (kbd "p") #'dotnet-publish)
+    (define-key map (kbd "r") #'dotnet-restore)
+    (define-key map (kbd "e") #'dotnet-run)
+    (define-key map (kbd "C-e") #'dotnet-run-with-args)
+    (define-key map (kbd "t") #'dotnet-test)
+    map)
+  "Keymap for dotnet-mode commands after `dotnet-mode-keymap-prefix'.")
+
+(defvar dotnet-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd dotnet-mode-keymap-prefix) dotnet-mode-command-map)
+    map)
+  "Keymap for dotnet-mode.")
+
+(defcustom dotnet-mode-keymap-prefix (kbd "C-c C-n")
+  "Dotnet minor mode keymap prefix."
+  :group 'dotnet
+  :type 'string)
 
 ;;;###autoload
-(define-minor-mode dotnet-minor-mode
-  "dotnet CLI minor mode. Used to hold keybindings for dotnet-mode"
-  nil " dotnet" dotnet-minor-mode-map)
-
-(define-key dotnet-minor-mode-map (kbd "C-c C-c a p") 'dotnet-add-package)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c a r") 'dotnet-add-reference)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c b") 'dotnet-build)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c c") 'dotnet-clean)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c n") 'dotnet-new)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c p") 'dotnet-publish)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c r") 'dotnet-restore)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c e") 'dotnet-run)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c C-e") 'dotnet-run-with-args)
-(define-key dotnet-minor-mode-map (kbd "C-c C-c t") 'dotnet-test)
+(define-minor-mode dotnet-mode
+  "dotnet CLI minor mode."
+  nil
+  " dotnet"
+  dotnet-mode-map
+  :group 'dotnet)
 
 
 (provide 'dotnet)
