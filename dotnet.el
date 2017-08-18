@@ -70,10 +70,10 @@
 PROJECT-PATH is the path to the new project, TEMPLATE is a
 template (see `dotnet-templates'), and LANG is a supported
 language (see `dotnet-langs')."
-  (interactive (list (read-string "Project path: ")
+  (interactive (list (read-directory-name "Project path: ")
                      (completing-read "Choose a template: " dotnet-templates)
                      (completing-read "Choose a language: " dotnet-langs)))
-  (dotnet-command (concat "dotnet"
+  (dotnet-command (concat "dotnet "
                           (mapconcat 'shell-quote-argument
                                      (list "new" template  "-o" project-path "-lang" lang)
                                      " "))))
@@ -103,6 +103,36 @@ language (see `dotnet-langs')."
   (dotnet-command (concat "dotnet run " args)))
 
 ;;;###autoload
+(defun dotnet-sln-add ()
+  "Add a project to a Solution."
+  (interactive)
+  (let ((solution-file (read-file-name "Solution file: ")))
+    (let ((to-add (read-file-name "Project/Pattern to add to the solution: ")))
+      (dotnet-command (concat "dotnet sln " solution-file " add " to-add)))))
+
+;;;###autoload
+(defun dotnet-sln-remove ()
+  "Remove a project from a Solution."
+  (interactive)
+  (let ((solution-file (read-file-name "Solution file: ")))
+    (let ((to-remove (read-file-name "Project/Pattern to remove from the solution: ")))
+      (dotnet-command (concat "dotnet sln " solution-file " remove " to-remove)))))
+
+;;;###autoload
+(defun dotnet-sln-list ()
+  "List all projects in a Solution."
+  (interactive)
+  (let ((solution-file (read-file-name "Solution file: ")))
+    (dotnet-command (concat "dotnet sln " solution-file " list"))))
+
+;;;###autoload
+(defun dotnet-sln-new ()
+  "Create a new Solution."
+  (interactive)
+  (let ((solution-path (read-directory-name "Solution path: ")))
+    (dotnet-command (concat "dotnet new sln -o " solution-path))))
+
+;;;###autoload
 (defun dotnet-test ()
   "Launch project unit-tests."
   (interactive)
@@ -116,14 +146,18 @@ language (see `dotnet-langs')."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a p") #'dotnet-add-package)
     (define-key map (kbd "a r") #'dotnet-add-reference)
-    (define-key map (kbd "b") #'dotnet-build)
-    (define-key map (kbd "c") #'dotnet-clean)
-    (define-key map (kbd "n") #'dotnet-new)
-    (define-key map (kbd "p") #'dotnet-publish)
-    (define-key map (kbd "r") #'dotnet-restore)
-    (define-key map (kbd "e") #'dotnet-run)
+    (define-key map (kbd "b")   #'dotnet-build)
+    (define-key map (kbd "c")   #'dotnet-clean)
+    (define-key map (kbd "n")   #'dotnet-new)
+    (define-key map (kbd "p")   #'dotnet-publish)
+    (define-key map (kbd "r")   #'dotnet-restore)
+    (define-key map (kbd "e")   #'dotnet-run)
     (define-key map (kbd "C-e") #'dotnet-run-with-args)
-    (define-key map (kbd "t") #'dotnet-test)
+    (define-key map (kbd "s a") #'dotnet-sln-add)
+    (define-key map (kbd "s l") #'dotnet-sln-list)
+    (define-key map (kbd "s n") #'dotnet-sln-new)
+    (define-key map (kbd "s r") #'dotnet-sln-remove)
+    (define-key map (kbd "t")   #'dotnet-test)
     map)
   "Keymap for dotnet-mode commands after `dotnet-mode-keymap-prefix'.")
 

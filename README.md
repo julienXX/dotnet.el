@@ -33,6 +33,10 @@ Default prefix is `C-c C-n`, you will now have the following key combinations at
  <kbd>prefix r</kbd>   | dotnet-restore
  <kbd>prefix e</kbd>   | dotnet-run
  <kbd>prefix C-e</kbd> | dotnet-run-with-args
+ <kbd>prefix s a</kbd> | dotnet-sln-add
+ <kbd>prefix s l</kbd> | dotnet-sln-list
+ <kbd>prefix s n</kbd> | dotnet-sln-new
+ <kbd>prefix s r</kbd> | dotnet-sln-remove
  <kbd>prefix t</kbd>   | dotnet-test
 
 You can customize the prefix by adding:
@@ -42,7 +46,7 @@ You can customize the prefix by adding:
 
 ### TODO
 
-- [ ] Handle solutions
+- [x] Handle solutions
 - [ ] Fancier test options (specific file/test)
 - [ ] Handle nuget advanced commands
 - [ ] Handle paket
