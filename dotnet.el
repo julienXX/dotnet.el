@@ -44,10 +44,11 @@
   (dotnet-command (concat "dotnet add package " package-name)))
 
 ;;;###autoload
-(defun dotnet-add-reference (project)
-  "Add PROJECT to project reference."
-  (interactive "sReference to: ")
-  (dotnet-command (concat "dotnet add reference " project)))
+(defun dotnet-add-reference (reference project)
+  "Add a REFERENCE to a PROJECT."
+  (interactive (list (read-file-name "Reference file: ")
+                     (read-file-name "In Project: ")))
+  (dotnet-command (concat "dotnet add " project " reference "  reference)))
 
 ;;;###autoload
 (defun dotnet-build ()
