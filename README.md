@@ -47,6 +47,7 @@ You can customize the prefix by adding:
 ### TODO
 
 - [x] Handle solutions
+- [ ] Re-run last test(s)
 - [ ] Fancier test options (specific file/test)
 - [ ] Handle nuget advanced commands
 - [ ] Handle paket
