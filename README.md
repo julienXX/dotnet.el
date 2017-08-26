@@ -38,6 +38,7 @@ Default prefix is `C-c C-n`, you will now have the following key combinations at
  <kbd>prefix s n</kbd> | dotnet-sln-new
  <kbd>prefix s r</kbd> | dotnet-sln-remove
  <kbd>prefix t</kbd>   | dotnet-test
+ <kbd>prefix T</kbd>   | dotnet-test-rerun
 
 You can customize the prefix by adding:
 ```el
@@ -47,7 +48,7 @@ You can customize the prefix by adding:
 ### TODO
 
 - [x] Handle solutions
-- [ ] Re-run last test(s)
+- [x] Re-run last test(s)
 - [ ] Fancier test options (specific file/test)
 - [ ] Handle nuget advanced commands
 - [ ] Handle paket
