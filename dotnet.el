@@ -133,23 +133,24 @@ language (see `dotnet-langs')."
   (let ((solution-path (read-directory-name "Solution path: ")))
     (dotnet-command (concat "dotnet new sln -o " solution-path))))
 
-(defvar dotnet-test-last-test-dir nil
-  "Last runned unit test directory.")
+(defvar dotnet-test-last-test-proj nil
+  "Last runned unit test project file.")
 
 ;;;###autoload
 (defun dotnet-test ()
   "Launch project unit-tests."
   (interactive)
-  (dotnet-command "dotnet test")
-  (setq dotnet-test-last-test-dir default-directory))
+  (let ((project-file (read-file-name "Launch tests for Project file: ")))
+    (setq dotnet-test-last-test-proj project-file)
+    (dotnet-command (concat "dotnet test " project-file))))
 
 ;;;###autoload
 (defun dotnet-test-rerun ()
   "Relaunch last project unit-tests."
   (interactive)
-  (if dotnet-test-last-test-dir
-    (dotnet-command (concat "dotnet test " dotnet-test-last-test-dir))
-  (dotnet-command "dotnet test")))
+  (if dotnet-test-last-test-proj
+      (dotnet-command (concat "dotnet test " dotnet-test-last-test-proj))
+    (dotnet-command "dotnet test")))
 
 (defun dotnet-command (cmd)
   "Run CMD in an async buffer."
