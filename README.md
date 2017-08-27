@@ -28,6 +28,9 @@ Default prefix is `C-c C-n`, you will now have the following key combinations at
  <kbd>prefix a r</kbd> | dotnet-add-reference
  <kbd>prefix b</kbd>   | dotnet-build
  <kbd>prefix c</kbd>   | dotnet-clean
+ <kbd>prefix g c</kbd> | dotnet-goto-csproj
+ <kbd>prefix g f</kbd> | dotnet-goto-fsproj
+ <kbd>prefix g s</kbd> | dotnet-goto-sln
  <kbd>prefix n</kbd>   | dotnet-new
  <kbd>prefix p</kbd>   | dotnet-publish
  <kbd>prefix r</kbd>   | dotnet-restore

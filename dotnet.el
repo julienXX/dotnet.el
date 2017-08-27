@@ -156,12 +156,54 @@ language (see `dotnet-langs')."
   "Run CMD in an async buffer."
   (async-shell-command cmd "*dotnet*"))
 
+(defun dotnet-find (extension)
+  "Search for a EXTENSION file in any enclosing folders relative to current directory."
+  (dotnet-search-upwards (rx-to-string extension)
+                         (file-name-directory buffer-file-name)))
+
+(defun dotnet-goto (extension)
+  "Open file with EXTENSION in any enclosing folders relative to current directory."
+  (let ((file (dotnet-find extension)))
+    (if file
+        (find-file file)
+      (error "Could not find any %s file" extension))))
+
+(defun dotnet-goto-sln ()
+  "Search for a solution file in any enclosing folders relative to current directory."
+  (interactive)
+  (dotnet-goto ".sln"))
+
+(defun dotnet-goto-csproj ()
+  "Search for a C# project file in any enclosing folders relative to current directory."
+  (interactive)
+  (dotnet-goto ".csproj"))
+
+(defun dotnet-goto-fsproj ()
+  "Search for a F# project file in any enclosing folders relative to current directory."
+  (interactive)
+  (dotnet-goto ".fsproj"))
+
+(defun dotnet-search-upwards (regex dir)
+  "Search for REGEX in DIR."
+  (when dir
+    (or (car-safe (directory-files dir 'full regex))
+        (dotnet-search-upwards regex (dotnet-parent-dir dir)))))
+
+(defun dotnet-parent-dir (dir)
+  "Find parent DIR."
+  (let ((p (file-name-directory (directory-file-name dir))))
+    (unless (equal p dir)
+      p)))
+
 (defvar dotnet-mode-command-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "a p") #'dotnet-add-package)
     (define-key map (kbd "a r") #'dotnet-add-reference)
     (define-key map (kbd "b")   #'dotnet-build)
     (define-key map (kbd "c")   #'dotnet-clean)
+    (define-key map (kbd "g c") #'dotnet-goto-csproj)
+    (define-key map (kbd "g f") #'dotnet-goto-fsproj)
+    (define-key map (kbd "g s") #'dotnet-goto-sln)
     (define-key map (kbd "n")   #'dotnet-new)
     (define-key map (kbd "p")   #'dotnet-publish)
     (define-key map (kbd "r")   #'dotnet-restore)
