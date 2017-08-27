@@ -4,7 +4,7 @@
 
 ;; Author: Julien BLANCHARD <julien@sideburns.eu>
 ;; URL: https://github.com/julienXX/dotnet.el
-;; Version: 0.10
+;; Version: 0.2
 ;; Keywords: .net, tools
 
 ;; This program is free software; you can redistribute it and/or modify
