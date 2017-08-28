@@ -1,5 +1,7 @@
 # dotnet.el
 
+[![MELPA](http://melpa.org/packages/dotnet-badge.svg)](http://melpa.org/#/dotnet)
+
 [dotnet CLI](https://docs.microsoft.com/en-us/dotnet/core/tools/index) mode for Emacs. This package gives you a set of key combinations to perform dotnet CLI tasks within your .NET Core projects.
 
 ## Installation
