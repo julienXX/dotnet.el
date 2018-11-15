@@ -23,6 +23,7 @@
 ;;; Commentary:
 ;;
 ;; dotnet CLI minor mode.
+
 ;; Provides some key combinations to interact with dotnet CLI.
 
 ;;; Code:
@@ -54,7 +55,9 @@
 (defun dotnet-build ()
   "Build a .NET project."
   (interactive)
-  (dotnet-command "dotnet build -v n"))
+  (let* ((target (dotnet-select-project-or-solution))
+         (command "dotnet build -v n \"%s\""))
+    (compile (format command target))))
 
 ;;;###autoload
 (defun dotnet-clean ()
@@ -194,6 +197,25 @@ language (see `dotnet-langs')."
   (let ((p (file-name-directory (directory-file-name dir))))
     (unless (equal p dir)
       p)))
+
+(defun dotnet-select-project-or-solution ()
+  "Prompt for the project/solution file or directory.  Try projectile root first, else use current buffer's directory."
+  (let ((default-dir-prompt "?"))
+    (ignore-errors
+      (when (fboundp 'projectile-project-root)
+        (setq default-dir-prompt (projectile-project-root))))
+    (when (string= default-dir-prompt "?")
+      (setq default-dir-prompt default-directory))
+    (expand-file-name (read-file-name "Project or solution: " default-dir-prompt nil t))))
+
+(defun dotnet-valid-project-solutions (path)
+  "Predicate to validate project/solution paths.  PATH is passed by `'read-file-name`."
+  ;; file-attributes returns t for directories
+  ;; if not a dir, then check the common extensions
+  (let ((extension (file-name-extension path))
+        (valid-projects (list "sln" "csproj" "fsproj")))
+    (or (member extension valid-projects)
+        (car (file-attributes path)))))
 
 (defvar dotnet-mode-command-map
   (let ((map (make-sparse-keymap)))
