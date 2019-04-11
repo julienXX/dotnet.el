@@ -137,23 +137,15 @@ language (see `dotnet-langs')."
     (dotnet-command (concat "dotnet new sln -o " solution-path))))
 
 (defvar dotnet-test-last-test-proj nil
-  "Last runned unit test project file.")
+  "Last unit test project file executed by `dotnet-test'.")
 
 ;;;###autoload
-(defun dotnet-test ()
-  "Launch project unit-tests."
-  (interactive)
-  (let ((project-file (read-file-name "Launch tests for Project file: ")))
-    (setq dotnet-test-last-test-proj project-file)
-    (dotnet-command (concat "dotnet test " project-file))))
-
-;;;###autoload
-(defun dotnet-test-rerun ()
-  "Relaunch last project unit-tests."
-  (interactive)
-  (if dotnet-test-last-test-proj
-      (dotnet-command (concat "dotnet test " dotnet-test-last-test-proj))
-    (dotnet-command "dotnet test")))
+(defun dotnet-test (arg)
+  "Launch project unit-tests, querying for a project on first call.  With ARG, query for project path again."
+  (interactive "P")
+  (when (or (not dotnet-test-last-test-proj) arg)
+    (setq dotnet-test-last-test-proj (read-file-name "Launch tests for Project file: ")))
+  (dotnet-command (concat "dotnet test " dotnet-test-last-test-proj)))
 
 (defun dotnet-command (cmd)
   "Run CMD in an async buffer."
@@ -236,7 +228,6 @@ language (see `dotnet-langs')."
     (define-key map (kbd "s n") #'dotnet-sln-new)
     (define-key map (kbd "s r") #'dotnet-sln-remove)
     (define-key map (kbd "t")   #'dotnet-test)
-    (define-key map (kbd "T")   #'dotnet-test-rerun)
     map)
   "Keymap for dotnet-mode commands after `dotnet-mode-keymap-prefix'.")
 
