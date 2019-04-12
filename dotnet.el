@@ -94,16 +94,22 @@ language (see `dotnet-langs')."
   (interactive)
   (dotnet-command "dotnet restore"))
 
+(defvar dotnet-run-last-proj-dir nil
+  "Last project directory executed by `dotnet-run'.")
+
 ;;;###autoload
-(defun dotnet-run ()
-  "Compile and execute a .NET project."
-  (interactive)
-  (dotnet-command "dotnet run"))
+(defun dotnet-run (arg)
+  "Compile and execute a .NET project.  With ARG, query for project path again."
+  (interactive "P")
+  (when (or (not dotnet-run-last-proj-dir) arg)
+    (setq dotnet-run-last-proj-dir (read-directory-name "Run project in directory: ")))
+  (let ((default-directory dotnet-run-last-proj-dir))
+    (dotnet-command (concat "dotnet run " dotnet-run-last-proj-dir))))
 
 ;;;###autoload
 (defun dotnet-run-with-args (args)
   "Compile and execute a .NET project with ARGS."
-  (interactive "sArguments: ")
+  (interactive "Arguments: ")
   (dotnet-command (concat "dotnet run " args)))
 
 ;;;###autoload
