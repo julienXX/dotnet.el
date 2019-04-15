@@ -1,10 +1,10 @@
 ;;; dotnet.el --- Interact with dotnet CLI tool
 
-;; Copyright (C) 2018 by Julien Blanchard
+;; Copyright (C) 2019 by Julien Blanchard
 
 ;; Author: Julien BLANCHARD <julien@sideburns.eu>
 ;; URL: https://github.com/julienXX/dotnet.el
-;; Version: 0.4
+;; Version: 0.5
 ;; Keywords: .net, tools
 
 ;; This program is free software; you can redistribute it and/or modify
