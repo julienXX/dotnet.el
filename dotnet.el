@@ -56,7 +56,7 @@
   "Build a .NET project."
   (interactive)
   (let* ((target (dotnet-select-project-or-solution))
-         (command "dotnet build -v n \"%s\""))
+         (command "dotnet build -v n /p:GenerateFullPaths=true \"%s\""))
     (compile (format command target))))
 
 ;;;###autoload
@@ -67,6 +67,11 @@
 
 (defvar dotnet-langs '("c#" "f#"))
 (defvar dotnet-templates '("console" "classlib" "mstest" "xunit" "web" "mvc" "webapi"))
+
+(defvar dotnet-compilation-regexps
+  (cons
+   "^\\([^\n]+\\)(\\([0-9]+\\),\\([0-9]+\\)): \\(?:error\\|\\(warning\\)\\)"
+   '(1 2 3 (4 . 5) 1)))
 
 ;;;###autoload
 (defun dotnet-new (project-path template lang)
@@ -249,7 +254,10 @@ language (see `dotnet-langs')."
   nil
   " dotnet"
   dotnet-mode-map
-  :group 'dotnet)
+  :group 'dotnet
+  (add-to-list 'compilation-error-regexp-alist-alist
+               (cons 'dotnet dotnet-compilation-regexps))
+  (add-to-list 'compilation-error-regexp-alist 'dotnet))
 
 
 (provide 'dotnet)
